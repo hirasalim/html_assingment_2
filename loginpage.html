@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login & Signup System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+}
+
+.container{
+    background:#fff;
+    width:350px;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:#007bff;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+.hidden{
+    display:none;
+}
+
+#welcomePage{
+    text-align:center;
+}
+
+#welcomeText{
+    color:#007bff;
+    margin-bottom:20px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Home Page -->
+    <div id="home">
+        <h2>Welcome</h2>
+        <button onclick="showLogin()">Login</button>
+        <button onclick="showSignup()">Sign Up</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginForm" class="hidden">
+        <h2>Login</h2>
+
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+        <button onclick="goHome()">Back</button>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signupForm" class="hidden">
+        <h2>Sign Up</h2>
+
+        <input type="text" id="signupUser" placeholder="Username" required>
+     
+        <input type="password" id="signupPass" placeholder="Password" required>
+        <input type="password" id="confirmPass" placeholder="Confirm Password" required>
+
+        <button onclick="signup()">Sign Up</button>
+        <button onclick="goHome()">Back</button>
+    </div>
+
+    <!-- Welcome Page -->
+    <div id="welcomePage" class="hidden">
+        <h2 id="welcomeText"></h2>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+</div>
+
+<script>
+
+function hideAll(){
+    document.getElementById("home").style.display="none";
+    document.getElementById("loginForm").style.display="none";
+    document.getElementById("signupForm").style.display="none";
+    document.getElementById("welcomePage").style.display="none";
+}
+
+function showLogin(){
+    hideAll();
+    document.getElementById("loginForm").style.display="block";
+}
+
+function showSignup(){
+    hideAll();
+    document.getElementById("signupForm").style.display="block";
+}
+
+function goHome(){
+    hideAll();
+    document.getElementById("home").style.display="block";
+}
+
+function signup(){
+
+    let username = document.getElementById("signupUser").value;
+   
+    let password = document.getElementById("signupPass").value;
+    let confirm = document.getElementById("confirmPass").value;
+
+    if(username === "" || password === "" || confirm === ""){
+        alert("Please fill all fields!");
+        return;
+    }
+
+    if(password !== confirm){
+        alert("Passwords do not match!");
+        return;
+    }
+
+    // Save User Data
+    localStorage.setItem("username", username);
+
+    localStorage.setItem("password", password);
+
+    // Direct Login & Welcome Page
+    hideAll();
+    document.getElementById("welcomePage").style.display="block";
+    document.getElementById("welcomeText").innerText =
+    "Welcome, " + username + " 🎉";
+}
+
+function login(){
+
+    let username = document.getElementById("loginUser").value;
+    let password = document.getElementById("loginPass").value;
+
+    let savedUser = localStorage.getItem("username");
+    let savedPass = localStorage.getItem("password");
+
+    if(username === savedUser && password === savedPass){
+
+        hideAll();
+        document.getElementById("welcomePage").style.display="block";
+        document.getElementById("welcomeText").innerText =
+        "Welcome, " + username + " 🎉";
+
+    }else{
+        alert("Invalid Username or Password!");
+    }
+}
+
+function logout(){
+    hideAll();
+    document.getElementById("home").style.display="block";
+}
+
+</script>
+
+</body>
+</html>
